@@ -1,34 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { auditTime, filter, fromEvent, Observable, tap, zip } from 'rxjs';
 import { PhotoService } from '../../services/photos-service/photos-service.service';
-import { delay, Observable } from 'rxjs';
-import { AsyncPipe, NgForOf } from '@angular/common';
+
 @Component({
   standalone: true,
   selector: 'app-gallery-component',
   templateUrl: './gallery.component.html',
   imports: [
-    AsyncPipe,
-    NgForOf
+    CommonModule
   ],
   styleUrls: ['./gallery.component.scss']
 })
-export class AppGalleryComponent {
+export class AppGalleryComponent implements OnInit {
   photoUrls$: Observable<string>[] = [];
+  isLoading: boolean = false;
 
   constructor(private photoService: PhotoService) {}
 
   ngOnInit() {
-    this.photoService.getPhotosUrls(3).subscribe(photos => {
-      this.photoUrls$.push(...photos)
-    });
+    fromEvent(window, 'scroll').pipe(
+      auditTime(150),
+      filter(() => (window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.isLoading),
+      tap(() => this.loadPhotos())
+    ).subscribe();
 
-    this.photoService.getPhotosUrls(3)
-      .pipe(
-        delay(1000)
-      )
-      .subscribe(photos => {
-        this.photoUrls$.push(...photos);
-        console.log(this.photoUrls$);
-      });
+    this.loadPhotos(16);
+  }
+
+  loadPhotos(count: number = 8) {
+    this.isLoading = true;
+    this.photoService.getPhotosUrls(count).subscribe(photos => {
+      this.photoUrls$.push(...photos);
+      zip(this.photoUrls$).subscribe(() => this.isLoading = false);
+    });
+  }
+
+  showPhoto(event: Event) {
+    (event.currentTarget as HTMLElement).classList.add('photo-loaded');
   }
 }
