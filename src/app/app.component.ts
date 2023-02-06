@@ -4,6 +4,4 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'Infinite photos app';
-}
+export class AppComponent { }
