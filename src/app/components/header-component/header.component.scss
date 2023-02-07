@@ -1,1 +1,21 @@
+@import './src/variables';
 
+.main-menu {
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+  margin-bottom: 30px;
+
+  .menu-link {
+    color: $secondary-color;
+    text-decoration: none;
+
+    &.active {
+      color: $main-color;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

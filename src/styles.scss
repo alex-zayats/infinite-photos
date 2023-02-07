@@ -1,19 +1,6 @@
 @use '@angular/material' as mat;
 
-$app-palette: mat.$blue-grey-palette;
-$app-primary: mat.define-palette(mat.$blue-grey-palette, 500);
-$app-accent: mat.define-palette(mat.$blue-grey-palette, 500);
-$app-warn: mat.define-palette(mat.$blue-grey-palette, 500);
-
-$app-theme: mat.define-light-theme((
-  color: (
-    primary: $app-primary,
-    accent: $app-accent,
-    warn: $app-warn
-  ),
-  typography: mat.define-typography-config(),
-  density: 0
-));
+@import "variables";
 
 @include mat.core-theme($app-theme);
 @include mat.all-component-themes($app-theme);

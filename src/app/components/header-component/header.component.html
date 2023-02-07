@@ -1,5 +1,4 @@
-<nav>
-  <a routerLink="" routerLinkActive="active">Gallery</a>
-  <a routerLink="favorites" routerLinkActive="active">Favorites</a>
-</nav>
-
+<mat-toolbar class="main-menu">
+  <a class="menu-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Gallery</a>
+  <a class="menu-link" routerLink="favorites" routerLinkActive="active">Favorites</a>
+</mat-toolbar>
