@@ -3,5 +3,12 @@
      class="main-photo"
      [src]="photoUrl"
      (click)="removeFavorite(photoUrl)"
-     *ngIf="photoId"
+     *ngIf="photoUrl"
      alt="main-photo">
+
+<button mat-stroked-button
+        color="primary"
+        class="remove-button"
+        disableRipple
+        *ngIf="photoUrl"
+        (click)="removeFavorite(photoUrl)">Remove from favorites</button>

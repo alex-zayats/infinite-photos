@@ -8,13 +8,13 @@ import { delay, map, Observable, range, share, toArray } from 'rxjs';
 export class PhotoService {
   photoServiceUrl = 'https://picsum.photos';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getPhotosUrls(count: number): Observable<Observable<string>[]> {
     return range(0, count).pipe(
       map(() => this.getPhotoUrl()),
       toArray()
-    )
+    );
   }
 
   getPhotoUrl(): Observable<string> {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { auditTime, filter, finalize, forkJoin, fromEvent, Observable, take, tap, zip } from 'rxjs';
+import { auditTime, filter, forkJoin, fromEvent, Observable, tap } from 'rxjs';
 import { PhotoService } from '../../services/photos-service/photos.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FavoritesService } from '../../services/favorites-service/favorites.service';
