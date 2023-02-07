@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { auditTime, filter, fromEvent, Observable, tap, zip } from 'rxjs';
 import { PhotoService } from '../../services/photos-service/photos-service.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   standalone: true,
   selector: 'app-gallery-component',
   templateUrl: './gallery.component.html',
   imports: [
-    CommonModule
+    CommonModule,
+    MatProgressSpinnerModule
   ],
   styleUrls: ['./gallery.component.scss']
 })
@@ -19,13 +21,16 @@ export class AppGalleryComponent implements OnInit {
   constructor(private photoService: PhotoService) {}
 
   ngOnInit() {
+    const columnsCount = Math.floor(window.innerWidth / 220);
+    const rowCount = Math.ceil(window.innerHeight / 300);
+
     fromEvent(window, 'scroll').pipe(
       auditTime(150),
       filter(() => (window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.isLoading),
-      tap(() => this.loadPhotos())
+      tap(() => this.loadPhotos(columnsCount))
     ).subscribe();
 
-    this.loadPhotos(16);
+    this.loadPhotos(columnsCount * rowCount);
   }
 
   loadPhotos(count: number = 8) {
