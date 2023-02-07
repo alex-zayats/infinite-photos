@@ -5,7 +5,7 @@ import { ReplaySubject } from 'rxjs';
   providedIn: 'root'
 })
 export class FavoritesService {
-  private favorites: Map<number, string>;
+  favorites: Map<number, string>;
   favorites$: ReplaySubject<Map<number, string>> = new ReplaySubject();
 
   constructor() {

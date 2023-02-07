@@ -11,7 +11,7 @@
     height: 0;
     box-sizing: border-box;
     cursor: pointer;
-    transition: .3s;
+    transition: .3s height;
 
     &.photo-loaded {
       height: 300px;

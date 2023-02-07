@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { auditTime, filter, fromEvent, Observable, tap, zip } from 'rxjs';
+import { auditTime, filter, finalize, forkJoin, fromEvent, Observable, take, tap, zip } from 'rxjs';
 import { PhotoService } from '../../services/photos-service/photos.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FavoritesService } from '../../services/favorites-service/favorites.service';
@@ -34,17 +34,22 @@ export class AppGalleryComponent implements OnInit {
     ).subscribe();
   }
 
-  loadPhotos(count: number = 8) {
+  loadPhotos(count: number) {
     this.isLoading = true;
-    this.photoService.getPhotosUrls(count).subscribe(photos => {
-      this.photoUrls$.push(...photos);
-      zip(this.photoUrls$).subscribe(() => this.isLoading = false);
-    });
+    this.photoService.getPhotosUrls(count)
+      .subscribe(photos => {
+        this.photoUrls$.push(...photos);
+        forkJoin(this.photoUrls$).subscribe(() => this.isLoading = false)
+      });
   }
 
   toggleFavorite(event: Event) {
-    const photoId = (event.currentTarget as HTMLImageElement).src;
-    this.favoritesService.toggleFavorite(photoId);
+    const photoUrl = (event.currentTarget as HTMLImageElement).src;
+    this.favoritesService.toggleFavorite(photoUrl);
+  }
+
+  isFavorite(photoUrl: string | null) {
+    return this.favoritesService.isFavorite(photoUrl ?? '');
   }
 
   showPhoto(event: Event) {

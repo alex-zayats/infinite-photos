@@ -1,12 +1,15 @@
 <div class="photo-gallery">
-  <img width="200"
-       height="300"
-       class="photo"
-       [src]="(photoUrl$ | async)"
-       (load)="showPhoto($event)"
-       (click)="toggleFavorite($event)"
-       *ngFor="let photoUrl$ of photoUrls$"
-       loading="lazy"
-       alt="photo">
+  <ng-container *ngFor="let photoUrl$ of photoUrls$">
+    <img width="200"
+         height="300"
+         class="photo"
+         [src]="photoUrl"
+         (load)="showPhoto($event)"
+         (click)="toggleFavorite($event)"
+         [ngClass]="{'photo-favorite': isFavorite(photoUrl)}"
+         *ngIf="(photoUrl$ | async) as photoUrl"
+         loading="lazy"
+         alt="photo">
+  </ng-container>
 </div>
 <mat-spinner class="loading-spinner" *ngIf="isLoading"></mat-spinner>

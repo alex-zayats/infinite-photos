@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, map, Observable, range, toArray } from 'rxjs';
+import { delay, map, Observable, range, share, toArray } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,9 @@ export class PhotoService {
   getPhotoUrl(): Observable<string> {
     return this.http.get(`${this.photoServiceUrl}/200/300`, { responseType: 'text', observe: 'response' })
       .pipe(
-        delay(Math.random() * 100),
-        map(response => response.url ?? '')
+        delay(Math.random() * 1000),
+        map(response => response.url ?? ''),
+        share()
       );
   }
 }
