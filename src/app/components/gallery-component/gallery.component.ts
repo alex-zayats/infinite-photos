@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { auditTime, filter, forkJoin, fromEvent, Observable, tap } from 'rxjs';
-import { PhotoService } from '../../services/photos-service/photos.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PhotoService } from '../../services/photos-service/photos.service';
 import { FavoritesService } from '../../services/favorites-service/favorites.service';
 
+@UntilDestroy()
 @Component({
   standalone: true,
   selector: 'app-gallery-component',
@@ -30,13 +32,15 @@ export class AppGalleryComponent implements OnInit {
     fromEvent(window, 'scroll').pipe(
       auditTime(150),
       filter(() => (window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.isLoading),
-      tap(() => this.loadPhotos(columnsCount))
+      tap(() => this.loadPhotos(columnsCount)),
+      untilDestroyed(this)
     ).subscribe();
   }
 
   loadPhotos(count: number) {
     this.isLoading = true;
     this.photoService.getPhotosUrls(count)
+      .pipe(untilDestroyed(this))
       .subscribe(photos => {
         this.photoUrls$.push(...photos);
         forkJoin(this.photoUrls$).subscribe(() => this.isLoading = false)
