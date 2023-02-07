@@ -5,12 +5,17 @@ import { ReplaySubject } from 'rxjs';
   providedIn: 'root'
 })
 export class FavoritesService {
-  favorites$: ReplaySubject<string[]> = new ReplaySubject<string[]>();
-  favorites: Set<string>;
+  private favorites: Map<number, string>;
+  favorites$: ReplaySubject<Map<number, string>> = new ReplaySubject();
 
   constructor() {
     this.initStorage();
     window.onstorage = () => { this.initStorage(); };
+  }
+
+  private getId(url: string): number {
+    const photoMatch = url.match(/id\/(\d*)/);
+    return (photoMatch && photoMatch[1]) ? +photoMatch[1] : -1;
   }
 
   initStorage() {
@@ -18,34 +23,38 @@ export class FavoritesService {
 
     try {
       const parsedFavorites = JSON.parse(favoritesStorage);
-      this.favorites = new Set(parsedFavorites);
+      this.favorites = new Map(parsedFavorites);
     } catch (error) {
-      this.favorites = new Set();
+      this.favorites = new Map();
     }
 
     this.updateStorage();
   }
 
   updateStorage() {
-    this.favorites$.next(Array.from(this.favorites));
+    this.favorites$.next(this.favorites);
     localStorage.setItem('favorites', JSON.stringify(Array.from(this.favorites)));
   }
 
-  addFavorite(id: string) {
-    this.favorites.add(id);
+  getUrl(id: number): string {
+    return this.favorites.get(id) ?? '';
+  }
+
+  addFavorite(url: string) {
+    this.favorites.set(this.getId(url), url);
     this.updateStorage();
   }
 
-  removeFavorite(id: string) {
-    this.favorites.delete(id);
+  removeFavorite(url: string) {
+    this.favorites.delete(this.getId(url));
     this.updateStorage();
   }
 
-  isFavorite(id: string) {
-    return this.favorites.has(id);
+  isFavorite(url: string) {
+    return this.favorites.has(this.getId(url));
   }
 
-  toggleFavorite(id: string) {
-    this.isFavorite(id) ? this.removeFavorite(id) : this.addFavorite(id);
+  toggleFavorite(url: string) {
+    this.isFavorite(url) ? this.removeFavorite(url) : this.addFavorite(url);
   }
 }

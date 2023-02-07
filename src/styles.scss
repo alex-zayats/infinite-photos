@@ -5,5 +5,4 @@
 @include mat.core-theme($app-theme);
 @include mat.all-component-themes($app-theme);
 
-html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

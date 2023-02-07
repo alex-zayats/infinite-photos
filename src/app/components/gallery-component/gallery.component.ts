@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { auditTime, combineLatest, filter, fromEvent, Observable, tap, zip } from 'rxjs';
+import { auditTime, filter, fromEvent, Observable, tap, zip } from 'rxjs';
 import { PhotoService } from '../../services/photos-service/photos.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FavoritesService } from '../../services/favorites-service/favorites.service';
@@ -49,7 +49,6 @@ export class AppGalleryComponent implements OnInit {
 
   showPhoto(event: Event) {
     const photoElem = event.currentTarget as HTMLImageElement;
-    const photoId = photoElem.src;
 
     photoElem.classList.add('photo-loaded');
   }

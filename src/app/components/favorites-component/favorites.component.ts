@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FavoritesService } from '../../services/favorites-service/favorites.service';
 
@@ -13,11 +14,15 @@ import { FavoritesService } from '../../services/favorites-service/favorites.ser
   styleUrls: ['./favorites.component.scss']
 })
 export class AppFavoritesComponent implements OnInit {
-  favorites$: Observable<string[]>;
+  favorites$: Observable<Map<number, string>>;
 
-  constructor(private favoritesService: FavoritesService) {}
+  constructor(private router: Router, private favoritesService: FavoritesService) {}
 
   ngOnInit() {
     this.favorites$ = this.favoritesService.favorites$.asObservable();
+  }
+
+  viewPhoto(id: number) {
+    void this.router.navigate([`/photos/${id}`]);
   }
 }

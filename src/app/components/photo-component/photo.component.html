@@ -1,1 +1,7 @@
-<h1>{{title}}</h1>
+<img width="400"
+     height="600"
+     class="main-photo"
+     [src]="photoUrl"
+     (click)="removeFavorite(photoUrl)"
+     *ngIf="photoId"
+     alt="main-photo">

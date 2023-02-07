@@ -2,8 +2,9 @@
   <img width="200"
        height="300"
        class="photo"
-       [src]="photoUrl"
-       *ngFor="let photoUrl of favorites$ | async"
+       [src]="photo.value"
+       (click)="viewPhoto(photo.key)"
+       *ngFor="let photo of (favorites$ | async)! | keyvalue"
        loading="lazy"
        alt="favorite-photo">
 </div>
