@@ -1,4 +1,12 @@
 <div class="photo-gallery">
-  <img width="200" height="300" [src]="(photoUrl$ | async)" (load)="showPhoto($event)" *ngFor="let photoUrl$ of photoUrls$" loading="lazy" alt="photo">
+  <img width="200"
+       height="300"
+       class="photo"
+       [src]="(photoUrl$ | async)"
+       (load)="showPhoto($event)"
+       (click)="toggleFavorite($event)"
+       *ngFor="let photoUrl$ of photoUrls$"
+       loading="lazy"
+       alt="photo">
 </div>
 <mat-spinner class="loading-spinner" *ngIf="isLoading"></mat-spinner>

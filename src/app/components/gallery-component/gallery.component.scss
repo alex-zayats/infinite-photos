@@ -1,16 +1,24 @@
+@import './src/variables';
+
 .photo-gallery {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
 
-  img {
+  .photo {
     display: block;
     height: 0;
+    box-sizing: border-box;
+    cursor: pointer;
     transition: .3s;
 
     &.photo-loaded {
       height: 300px;
+    }
+
+    &.photo-favorite {
+      border: 2px solid red;
     }
   }
 }

@@ -1,1 +1,9 @@
-<h1>{{title}}</h1>
+<div class="favorites-gallery">
+  <img width="200"
+       height="300"
+       class="photo"
+       [src]="photoUrl"
+       *ngFor="let photoUrl of favorites$ | async"
+       loading="lazy"
+       alt="favorite-photo">
+</div>

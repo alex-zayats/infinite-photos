@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PhotosServiceService } from './photos-service.service';
+import { PhotosServiceService } from './photos.service';
 
 describe('PhotosServiceService', () => {
   let service: PhotosServiceService;

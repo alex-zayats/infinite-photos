@@ -20,7 +20,7 @@ export class PhotoService {
   getPhotoUrl(): Observable<string> {
     return this.http.get(`${this.photoServiceUrl}/200/300`, { responseType: 'text', observe: 'response' })
       .pipe(
-        delay(2000),
+        delay(Math.random() * 100),
         map(response => response.url ?? '')
       );
   }

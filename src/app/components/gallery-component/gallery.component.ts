@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { auditTime, filter, fromEvent, Observable, tap, zip } from 'rxjs';
-import { PhotoService } from '../../services/photos-service/photos-service.service';
+import { auditTime, combineLatest, filter, fromEvent, Observable, tap, zip } from 'rxjs';
+import { PhotoService } from '../../services/photos-service/photos.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FavoritesService } from '../../services/favorites-service/favorites.service';
 
 @Component({
   standalone: true,
@@ -18,19 +19,19 @@ export class AppGalleryComponent implements OnInit {
   photoUrls$: Observable<string>[] = [];
   isLoading: boolean = false;
 
-  constructor(private photoService: PhotoService) {}
+  constructor(private photoService: PhotoService, private favoritesService: FavoritesService) {}
 
   ngOnInit() {
     const columnsCount = Math.floor(window.innerWidth / 220);
     const rowCount = Math.ceil(window.innerHeight / 300);
+
+    this.loadPhotos(columnsCount * rowCount);
 
     fromEvent(window, 'scroll').pipe(
       auditTime(150),
       filter(() => (window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.isLoading),
       tap(() => this.loadPhotos(columnsCount))
     ).subscribe();
-
-    this.loadPhotos(columnsCount * rowCount);
   }
 
   loadPhotos(count: number = 8) {
@@ -41,7 +42,15 @@ export class AppGalleryComponent implements OnInit {
     });
   }
 
+  toggleFavorite(event: Event) {
+    const photoId = (event.currentTarget as HTMLImageElement).src;
+    this.favoritesService.toggleFavorite(photoId);
+  }
+
   showPhoto(event: Event) {
-    (event.currentTarget as HTMLElement).classList.add('photo-loaded');
+    const photoElem = event.currentTarget as HTMLImageElement;
+    const photoId = photoElem.src;
+
+    photoElem.classList.add('photo-loaded');
   }
 }

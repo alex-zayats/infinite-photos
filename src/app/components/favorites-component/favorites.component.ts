@@ -1,19 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { FavoritesService } from '../../services/favorites-service/favorites.service';
+
 @Component({
   standalone: true,
   selector: 'app-favorites-component',
   templateUrl: './favorites.component.html',
+  imports: [
+    CommonModule
+  ],
   styleUrls: ['./favorites.component.scss']
 })
 export class AppFavoritesComponent implements OnInit {
-  title: string = 'Favorites component';
-  photoId?: number;
+  favorites$: Observable<string[]>;
 
-  constructor(private route:ActivatedRoute) {}
+  constructor(private favoritesService: FavoritesService) {}
 
   ngOnInit() {
-    this.route.params.subscribe( params => this.photoId = params['id']);
-    console.log(this.photoId);
+    this.favorites$ = this.favoritesService.favorites$.asObservable();
   }
 }
