@@ -23,11 +23,11 @@ describe('FavoritesService', () => {
 
   describe('initStorage', () => {
     it('should init "favorites" property', () => {
-      spyOn(service, 'updateStorage');
+      spyOn(localStorage, 'getItem').withArgs('favorites').and.returnValue('');
 
       service.initStorage();
 
-      expect(service.favorites).toEqual(dummyFavorites);
+      expect(service.favorites).toEqual(new Map());
     });
 
     it('should call updateStorage', () => {
