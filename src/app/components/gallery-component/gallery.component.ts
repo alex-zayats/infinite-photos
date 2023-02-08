@@ -23,7 +23,7 @@ export class AppGalleryComponent implements OnInit {
 
   constructor(private photoService: PhotoService, private favoritesService: FavoritesService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const columnsCount = Math.floor(window.innerWidth / 220);
     const rowCount = Math.ceil(window.innerHeight / 300);
 
@@ -37,7 +37,7 @@ export class AppGalleryComponent implements OnInit {
     ).subscribe();
   }
 
-  loadPhotos(count: number) {
+  loadPhotos(count: number): void {
     this.isLoading = true;
     this.photoService.getPhotosUrls(count)
       .pipe(untilDestroyed(this))
@@ -47,16 +47,16 @@ export class AppGalleryComponent implements OnInit {
       });
   }
 
-  toggleFavorite(event: Event) {
+  toggleFavorite(event: Event): void {
     const photoUrl = (event.currentTarget as HTMLImageElement).src;
     this.favoritesService.toggleFavorite(photoUrl);
   }
 
-  isFavorite(photoUrl: string | null) {
+  isFavorite(photoUrl: string | null): boolean {
     return this.favoritesService.isFavorite(photoUrl ?? '');
   }
 
-  showPhoto(event: Event) {
+  showPhoto(event: Event): void {
     const photoElem = event.currentTarget as HTMLImageElement;
 
     photoElem.classList.add('photo-loaded');

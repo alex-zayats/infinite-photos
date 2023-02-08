@@ -20,12 +20,12 @@ export class AppPhotoComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private favoritesService: FavoritesService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.photoId = Number(this.route.snapshot.paramMap.get('id'));
     this.photoUrl = this.favoritesService.getUrl(this.photoId);
   }
 
-  removeFavorite(url: string) {
+  removeFavorite(url: string): void {
     this.favoritesService.removeFavorite(url);
   }
 }

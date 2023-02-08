@@ -18,11 +18,11 @@ export class AppFavoritesComponent implements OnInit {
 
   constructor(private router: Router, private favoritesService: FavoritesService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.favorites$ = this.favoritesService.favorites$.asObservable();
   }
 
-  viewPhoto(id: number) {
+  viewPhoto(id: number): void {
     void this.router.navigate([`/photos/${id}`]);
   }
 }

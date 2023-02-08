@@ -1,31 +1,45 @@
-import { TestBed } from '@angular/core/testing';
-import { HeaderComponent } from './photo.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppPhotoComponent } from './photo.component';
+import { FavoritesService } from '../../services/favorites-service/favorites.service';
 
-describe('AppComponent', () => {
+describe('AppPhotoComponent', () => {
+  let fixture: ComponentFixture<AppPhotoComponent>;
+  let component: AppPhotoComponent;
+  let favoritesService: FavoritesService;
+  let activatedRoute: ActivatedRoute;
+
+  const dummyUrl = 'https://some-photo-url.jpg/';
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        HeaderComponent
-      ],
+      imports: [
+        AppPhotoComponent,
+        RouterTestingModule.withRoutes([])
+      ]
     }).compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(HeaderComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'infinite-photos'`, () => {
-    const fixture = TestBed.createComponent(HeaderComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('infinite-photos');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(HeaderComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppPhotoComponent);
+    favoritesService = TestBed.inject(FavoritesService);
+    activatedRoute = TestBed.inject(ActivatedRoute);
+    component = fixture.componentInstance;
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('infinite-photos app is running!');
   });
+
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
+
+  describe('removeFavorite', () => {
+    it('should call removeFavorite in service', function () {
+      spyOn(favoritesService, 'removeFavorite');
+
+      component.removeFavorite(dummyUrl);
+
+      expect(favoritesService.removeFavorite).toHaveBeenCalledWith(dummyUrl);
+    });
+  })
 });

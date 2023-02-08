@@ -18,7 +18,7 @@ export class FavoritesService {
     return (photoMatch && photoMatch[1]) ? +photoMatch[1] : -1;
   }
 
-  initStorage() {
+  initStorage(): void {
     const favoritesStorage = localStorage.getItem('favorites') ?? '';
 
     try {
@@ -31,7 +31,7 @@ export class FavoritesService {
     this.updateStorage();
   }
 
-  updateStorage() {
+  updateStorage(): void {
     this.favorites$.next(this.favorites);
     localStorage.setItem('favorites', JSON.stringify(Array.from(this.favorites)));
   }
@@ -40,21 +40,21 @@ export class FavoritesService {
     return this.favorites.get(id) ?? '';
   }
 
-  addFavorite(url: string) {
+  addFavorite(url: string): void {
     this.favorites.set(this.getId(url), url);
     this.updateStorage();
   }
 
-  removeFavorite(url: string) {
+  removeFavorite(url: string): void {
     this.favorites.delete(this.getId(url));
     this.updateStorage();
   }
 
-  isFavorite(url: string) {
+  isFavorite(url: string): boolean {
     return this.favorites.has(this.getId(url));
   }
 
-  toggleFavorite(url: string) {
+  toggleFavorite(url: string): void {
     this.isFavorite(url) ? this.removeFavorite(url) : this.addFavorite(url);
   }
 }
